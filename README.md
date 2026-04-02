@@ -1,101 +1,44 @@
-# Unity AI Chat Server
+# Nexus AI: Local LLM Bridge for Unity 🤖🎮
 
-A FastAPI server that bridges a Unity 3D application with a local Ollama LLM, enabling an AI character to chat, navigate rooms, dance, and sing within a Unity apartment scene.
+**Nexus AI** is a high-performance middleware built with **FastAPI** that bridges Unity 3D environments with local Large Language Models (LLMs) via **Ollama**. It enables 3D agents to process natural language, maintain spatial awareness, and execute complex environmental actions—such as navigation, animations, and singing—in real-time.
 
-## Prerequisites
+---
 
-- **Python 3.8+**
-- **Ollama** installed and running locally — [Download Ollama](https://ollama.com)
-- The **Llama 3.2** model pulled in Ollama
+## 🌟 Key Features
+* **Local Inference:** Optimized for `Llama 3.2` via Ollama for zero-latency, privacy-focused, and cost-free AI interaction.
+* **Spatial Awareness:** The AI understands its environment (Kitchen, Bedroom, etc.) and can trigger movement via specialized action tokens.
+* **Action-Oriented API:** Beyond simple chat, the server parses intent to return executable command tags like `[MOVE]`, `[DANCE]`, and `[SING]`.
+* **Unity-Ready:** Designed for seamless integration with C# `UnityWebRequest` and JSON serialization.
 
-## Setup
+---
 
-### 1. Clone the Repository
+## 🛠️ Tech Stack
+* **Backend:** Python 3.10+, FastAPI, Uvicorn
+* **AI Engine:** Ollama (Llama 3.2)
+* **Communication:** JSON over REST API
+* **Frontend:** Unity Engine (C#)
 
+---
+
+## 🚀 Quick Start
+
+### 1. Prerequisites
+* [Ollama](https://ollama.com) installed and running.
+* Pull the required model:
+    ```bash
+    ollama pull llama3.2
+    ```
+
+### 2. Installation
 ```bash
-git clone https://github.com/HARSH-1607/Test1.git
-cd Test1
-```
+# Clone the repository
+git clone [https://github.com/HARSH-1607/Nexus-AI-Unity.git](https://github.com/HARSH-1607/Nexus-AI-Unity.git)
+cd Nexus-AI-Unity
 
-### 2. Create a Virtual Environment
-
-```bash
+# Create and activate a virtual environment
 python -m venv .venv
-```
+source .venv/bin/activate  # macOS/Linux
+.venv\Scripts\activate     # Windows
 
-Activate it:
-
-- **Windows:** `.venv\Scripts\activate`
-- **macOS / Linux:** `source .venv/bin/activate`
-
-### 3. Install Dependencies
-
-```bash
+# Install dependencies
 pip install fastapi uvicorn pydantic requests
-```
-
-### 4. Pull the Ollama Model
-
-Make sure Ollama is running, then pull the model:
-
-```bash
-ollama pull llama3.2
-```
-
-## Starting the Server
-
-```bash
-python main.py
-```
-
-The server will start on **http://localhost:8000**.
-
-## API Usage
-
-### `POST /chat`
-
-Send a chat message to the AI character.
-
-**Request Body (JSON):**
-
-```json
-{
-  "user_input": "Can you go to the kitchen?",
-  "environment_context": "standing in the living room"
-}
-```
-
-**Response (JSON):**
-
-```json
-{
-  "response": "[MOVE:Kitchen] Sure, I'll head to the kitchen right away!"
-}
-```
-
-| Field                | Type   | Description                                                  |
-| -------------------- | ------ | ------------------------------------------------------------ |
-| `user_input`         | string | The player's message to the AI character                     |
-| `environment_context`| string | *(optional)* Description of the character's current context  |
-
-### Character Actions
-
-The AI character supports the following special actions:
-
-| Action   | Trigger                        | Response Format                          |
-| -------- | ------------------------------ | ---------------------------------------- |
-| **Move** | Ask the character to go somewhere | `[MOVE:RoomName] ...`                 |
-| **Dance**| Ask the character to dance     | `[DANCE] ...`                            |
-| **Sing** | Ask the character to sing      | `[SING] ...` (includes a short 2-line rhyming song) |
-
-**Available Rooms:** `Kitchen`, `Bedroom`, `Living Room`
-
-## Configuration
-
-| Setting          | Default                                  | Location     |
-| ---------------- | ---------------------------------------- | ------------ |
-| Server host      | `0.0.0.0`                                | `main.py:50` |
-| Server port      | `8000`                                   | `main.py:50` |
-| Ollama URL       | `http://localhost:11434/api/generate`     | `main.py:13` |
-| LLM model        | `llama3.2`                               | `main.py:34` |
-| Available rooms  | `Kitchen, Bedroom, Living Room`          | `main.py:18` |
